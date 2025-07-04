@@ -1,110 +1,52 @@
 # Deep Autoencoders for Anomaly Detection with Flask Deployment
 
-This project demonstrates how to build and deploy a **Deep Autoencoders** model for **Anomaly Detection** in transaction data. The model is deployed using **Flask** and served as an API for real-time predictions.
+This project focuses on building and deploying a **Deep Autoencoders** model for **Anomaly Detection** in transaction data. The deep learning model is trained using **Keras** and **TensorFlow** and deployed as a **Flask API** for real-time predictions. The system leverages **autoencoders**, a powerful unsupervised learning technique, to detect fraudulent transactions by learning compressed representations of normal data and identifying anomalies based on reconstruction error.
 
-## Table of Contents
+## Overview
+Autoencoders are neural networks that learn efficient encodings of data, typically used for dimensionality reduction or anomaly detection. The model consists of an **encoder** and a **decoder**, where the encoder compresses the data into a lower-dimensional representation, and the decoder attempts to reconstruct the original data. This model is trained to minimize the reconstruction error between the input and the output, allowing it to detect anomalous data points that deviate significantly from the learned patterns.
 
-- [Project Overview](#project-overview)
-- [Tech Stack](#tech-stack)
-- [Approach](#approach)
-- [Tools](#tools)
-- [Project Structure](#project-structure)
+In this project, we apply **autoencoders** to a **transaction dataset** containing over 100K records, with features representing various attributes of credit card transactions. Anomalies are identified based on the reconstruction error, where transactions with high error values are considered anomalies (e.g., fraudulent activities).
 
-
----
-
-## Project Overview
-
-The goal of this project is to build a **deep learning model** based on **Autoencoders** for **Anomaly Detection**. The model is trained on a transaction dataset and can identify fraudulent transactions by detecting anomalies in the data. After training the model, it is deployed as a Flask API for real-time anomaly detection.
-
-### What You Will Learn
-
-- **Autoencoders**: Their architecture and how they work for anomaly detection.
-- **Deep Learning with Keras**: Build a model using Keras and TensorFlow.
-- **Flask Deployment**: Deploying a trained model as an API endpoint with Flask.
+## Learning Outcomes
+- **Understanding Autoencoders**: Learn how autoencoders work, their architecture, and applications in anomaly detection.
+- **Deep Learning with Keras**: Build and train an autoencoder using Keras and TensorFlow.
+- **Flask for API Deployment**: Serve the trained model via Flask as an API, enabling real-time predictions.
 - **Data Preprocessing**: Handling missing values, normalization, and exploratory data analysis (EDA).
 
----
-
 ## Tech Stack
-
 - **Programming Language**: Python
-- **Deep Learning Framework**: Keras, TensorFlow
-- **Web Framework**: Flask (for deploying the model as an API)
-- **Database/Storage**: N/A (Using local file storage for datasets)
-- **Data Manipulation and Analysis**: Pandas, Numpy
+- **Deep Learning Framework**: Keras (with TensorFlow backend)
+- **API Service**: Flask (for deploying the model as a RESTful API)
+- **Web Server**: Gunicorn (for production deployment)
+- **Data Analysis & Manipulation**: Pandas, Numpy
 - **Data Visualization**: Matplotlib
-- **Server**: Gunicorn (for production deployment)
-
----
 
 ## Approach
+The project follows a systematic approach to build the autoencoder model and deploy it using Flask:
 
-### Step-by-Step Process
-
-1. **Business Objective Understanding**:
-   - The goal is to identify fraudulent transactions using an unsupervised deep learning approach.
-   
-2. **Exploratory Data Analysis (EDA)**:
-   - Analyze the dataset to understand its structure and key features.
-   - Visualize the distributions and handle missing values.
-
-3. **Data Cleaning and Normalization**:
-   - Impute missing values and normalize the data using Min-Max scaling to ensure consistent input to the model.
-
-4. **Autoencoder Model Development**:
-   - Build the Autoencoder model with Keras. Start with a basic architecture and experiment with different configurations for improved performance.
-
-5. **Model Tuning**:
-   - Tune the hyperparameters such as the number of layers, neurons, activation functions, and optimizer settings.
-
-6. **Training the Model**:
-   - Train the model on the transaction data and compute the reconstruction error.
-
-7. **Anomaly Detection**:
-   - Define a threshold for the reconstruction error to classify normal and anomalous transactions.
-
-8. **Flask API Deployment**:
-   - Serve the trained Autoencoder model as an API endpoint using Flask.
-   - Set up Gunicorn for running Flask in production.
-
-9. **Real-Time Predictions**:
-   - Use the deployed API to make real-time predictions on incoming transaction data.
-
----
-
-## Tools
-
-- **Keras**: A deep learning library that simplifies model creation and training.
-- **TensorFlow**: Backend engine for Keras, used for training deep learning models.
-- **Flask**: Web framework for building and serving the trained model as an API.
-- **Gunicorn**: WSGI server used for running Flask in production environments.
-- **Pandas**: Data manipulation and analysis library for handling datasets.
-- **Numpy**: Used for numerical operations, especially for data processing.
-- **Matplotlib**: Data visualization library used for plotting graphs and distributions.
-
----
+1. **Business Objective Understanding**: The goal is to use an unsupervised deep learning model to identify fraudulent transactions from a set of credit card transactions.
+2. **Exploratory Data Analysis (EDA)**: Analyze the dataset to understand its structure, perform data visualizations, and inspect for missing values or outliers.
+3. **Data Cleaning and Normalization**: Handle missing values using imputation, and normalize the features using Min-Max scaling to prepare the data for training.
+4. **Autoencoder Theory**: Autoencoders consist of an encoder and a decoder. The encoder reduces the dimensionality of the input, and the decoder attempts to reconstruct the original data from this compressed representation.
+5. **Model Building**: Build an autoencoder model using Keras with an architecture consisting of several dense layers. The model is trained to minimize the reconstruction error.
+6. **Model Tuning**: Experiment with different architectures, activation functions, and hyperparameters (e.g., number of layers, neurons, learning rate) to optimize performance.
+7. **Training the Model**: Train the model on the transaction data and compute the reconstruction error.
+8. **Anomaly Detection**: Define a threshold for the reconstruction error to classify normal and anomalous transactions.
+9. **Flask API Deployment**: Deploy the trained model using Flask. Set up Gunicorn for running Flask in production.
+10. **Real-Time Predictions**: Once the API is running, it can be used to make predictions on new data by sending HTTP POST requests with transaction features.
 
 ## Project Structure
+The project is organized into the following key folders:
 
-This repository contains the following main directories and files:
+### Folder Descriptions:
 
-├── modular_code/ # Contains the core project code
-│ ├── input/ # Input datasets (e.g., final_cred_data.csv, test_data.csv)
-│ ├── lib/ # Notebooks and additional libraries
-│ │ ├── Deep-Autoencoder.ipynb # Notebook for training the autoencoder model
-│ │ └── Model_Api.ipynb # Notebook for setting up the Flask API
-│ ├── output/ # Model and output files (e.g., pickle files, model weights)
-│ ├── requirements.txt # List of required Python packages
-│ └── src/ # Source code for the project
-│ ├── init.py # Package initialization
-│ ├── Engine.py # Main engine code for training and serving model
-│ └── ML_Pipeline/ # Machine learning pipeline for model training and predictions
-│ ├── Preprocess.py # Data preprocessing functions
-│ ├── Utils.py # Utility functions for model saving/loading
-│ └── Train_Model.py # Model training code
-└── README.md # Project overview and setup instructions
-
-
----
-
+- **`modular_code/`**: Contains the core project files, including input datasets, source code, and model-related files.
+  - **`input/`**: Directory where datasets like `final_cred_data.csv` and `test_data.csv` are stored.
+  - **`lib/`**: Contains Jupyter notebooks and additional libraries required for model training and API setup.
+  - **`output/`**: Stores output files, such as trained model weights and pickle files.
+  - **`requirements.txt`**: Specifies the Python packages required to run the project.
+  - **`src/`**: Source code for the project, including the engine and machine learning pipeline.
+    - **`Engine.py`**: Core code for training and serving the model.
+    - **`ML_Pipeline/`**: Contains modules for data preprocessing, utility functions, and training the model.
+  
+- **`README.md`**: This file, providing an overview of the project, setup instructions, and usage.
